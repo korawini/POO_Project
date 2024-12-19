@@ -1,0 +1,15 @@
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\bin\Debug\net9.0\LibraryPOO_Project.exe
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\bin\Debug\net9.0\LibraryPOO_Project.deps.json
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\bin\Debug\net9.0\LibraryPOO_Project.runtimeconfig.json
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\bin\Debug\net9.0\LibraryPOO_Project.dll
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\bin\Debug\net9.0\LibraryPOO_Project.pdb
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.AssemblyInfoInputs.cache
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.AssemblyInfo.cs
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.csproj.CoreCompileInputs.cache
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.sourcelink.json
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.dll
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\refint\LibraryPOO_Project.dll
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.pdb
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\LibraryPOO_Project.genruntimeconfig.cache
+C:\Users\alexa\RiderProjects\LibraryPOO_Project\LibraryPOO_Project\obj\Debug\net9.0\ref\LibraryPOO_Project.dll
