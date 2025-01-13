@@ -48,6 +48,18 @@ public class user
         Console.WriteLine("User has been penalized. Maximum loans reduced to 1.");
     }
     
+    public void CheckPenalties()
+    {
+        foreach (var loan in Loans)
+        {
+            if (!loan.IsAvailable && DateTime.Now > loan.DueDate)
+            {
+                Penalize();
+                break;
+            }
+        }
+    }
+    
     public user(int userId, string name, string email, List<loan> loans, int maxLoans, int loanDuration)
     {
         this.userId = userId;
@@ -55,5 +67,6 @@ public class user
         this.email = email;
         this.maxLoans = maxLoans;
         this.loans = loans;
+        this.loanDuration = loanDuration;
     }
 }

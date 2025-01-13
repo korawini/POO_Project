@@ -32,11 +32,19 @@ public class library
         if(!loans.Contains(loan))
             loans.Add(loan);
     }
+
+    public void CheckAllPenalties()
+    {
+        foreach (var user in users)
+        {
+            user.CheckPenalties();
+        }
+    }
     
     public void BorrowResource(int userId, int resourceId)
     {
         var user = users.FirstOrDefault(u => u.UserId == userId);
-        var resource = resources.FirstOrDefault(r => r.ResourceId == resourceId);//resource
+        resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); //resource
 
         if (user == null)
             throw new ArgumentException("User not found.");
@@ -45,7 +53,11 @@ public class library
             throw new ArgumentException("Resource not found.");
 
         if (resource.AvailableStock <= 0)
-            throw new InvalidOperationException("Resource is not available.");
+        {
+            Console.WriteLine($"Resource '{resource.Title}' is not available. Adding user {userId} to the reservation list.");
+            resource.AddReservation(userId);
+            return;
+        }
 
         if (user.Loans.Count >= user.MaxLoans)
             throw new InvalidOperationException("User has reached the maximum number of loans.");
@@ -84,6 +96,11 @@ public class library
         else
         {
             Console.WriteLine($"Resource '{resource.Title}' returned successfully by {user.Name}.");
+        }
+        var nextUserId = resource.GetNextReservation();
+        if (nextUserId.HasValue)
+        {
+            Console.WriteLine($"Resource '{resource.Title}' is now reserved for user {nextUserId.Value}.");
         }
     }
     
