@@ -1,7 +1,7 @@
 namespace LibraryPOO_Project;
 //base for manual, book, ebook, magazine
 //can be borrowed by anyone
-public class book
+public class book : resource
 {
     private string id, title, author, type, genre;
     private DateTime publishingDate;
@@ -16,14 +16,8 @@ public class book
     public int AvailableStock { get => availableStock; }
     
     public book(string id, string title, string author, string type, string genre, DateTime publishingDate,
-        int availableStock)
+        int availableStock): base(id, title, author, type, genre, publishingDate, availableStock)
     {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.type = type;
-        this.genre = genre;
-        this.publishingDate = publishingDate;
-        this.availableStock = availableStock;
+        
     }
 }
