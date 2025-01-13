@@ -2,10 +2,11 @@ namespace LibraryPOO_Project;
 
 public class admin:user
 {
-    private string userId, name, email;
+    private string name, email;
     private List <loan> loans = new List<loan>();
+    private int userId;
 
-    public admin(string userId, string name, string email, List<loan> loans) : base(userId, name, email, 888, loans)
+    public admin(int userId, string name, string email, List<loan> loans) : base(userId, name, email,  loans)
     {
     }
 }
