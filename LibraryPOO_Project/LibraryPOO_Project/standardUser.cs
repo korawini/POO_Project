@@ -1,6 +1,6 @@
 namespace LibraryPOO_Project;
 
-public class standardUser: user
+public class standardUser: student
 {
     private string  name, email;
     private List <loan> loans = new List<loan>();

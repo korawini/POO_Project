@@ -5,26 +5,26 @@ using System.Globalization;
 
 public class library
 {
-    public List<book> resources { get; set; }
-    public List<user> users { get; set; }
+    public List<resource> resources { get; set; }
+    public List<student> students { get; set; }
     public List<loan> loans { get; set; }
 
     public library()
     {
-        resources = new List<book>();
-        users = new List<user>();
+        resources = new List<resource>();
+        students = new List<student>();
     }
 
-    public void AddResource(book resource)
+    public void AddResource(resource resourcex)
     {
-        if (!resources.Contains(resource))
-            resources.Add(resource);
+        if (!resources.Contains(resourcex))
+            resources.Add(resourcex);
     }
 
-    public void AddUser(user user)
+    public void AddStudent(student student)
     {
-        if (!users.Contains(user))
-            users.Add(user);
+        if (!students.Contains(student))
+            students.Add(student);
     }
 
     public void AddLoan(loan loan)
@@ -35,15 +35,15 @@ public class library
 
     public void CheckAllPenalties()
     {
-        foreach (var user in users)
+        //foreach (var s in student)
         {
-            user.CheckPenalties();
+        //    s.CheckPenalties();
         }
     }
     
     public void BorrowResource(int userId, int resourceId)
     {
-        var user = users.FirstOrDefault(u => u.UserId == userId);
+        var user = students.FirstOrDefault(u => u.UserId == userId);
         resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); //resource
 
         if (user == null)
@@ -79,7 +79,7 @@ public class library
             throw new ArgumentException("Invalid loan ID or resource already returned.");
 
         var resource = resources.FirstOrDefault(r => r.ResourceId == loan.ResourceId);
-        var user = users.FirstOrDefault(u => u.UserId == loan.UserId);
+        var user = students.FirstOrDefault(u => u.UserId == loan.UserId);
 
         if (resource == null || user == null)
             throw new InvalidOperationException("Invalid resource or user.");
@@ -103,7 +103,7 @@ public class library
             Console.WriteLine($"Resource '{resource.Title}' is now reserved for user {nextUserId.Value}.");
         }
     }
-    
+    /*
     public void SaveData(string resourcesFile, string usersFile)
     {
         try
@@ -140,5 +140,5 @@ public class library
         {
             Console.WriteLine($"Error loading data: {ex.Message}");
         }
-    }
+    }*/
 }
