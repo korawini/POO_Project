@@ -5,14 +5,16 @@ using System.Globalization;
 
 public class library
 {
-    public List<resource> resources { get=>resources; set=>resources=value; }
-    public List<student> students { get=>students; set=>students=value; }
-    public List<loan> loans { get=>loans; set=>loans=value; }
+    public List<resource> resources ;
+    public List<student> students;
+    public List<loan> loans;
+        
 
     public library()
     {
         resources = new List<resource>();
         students = new List<student>();
+        loans = new List<loan>();
     }
 
     public void AddResource(resource resourcex)

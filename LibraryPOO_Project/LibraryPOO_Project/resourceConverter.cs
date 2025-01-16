@@ -24,11 +24,22 @@ public class resourceConverter : JsonConverter<resource>
         var type = value.GetType().Name;
         writer.WriteStartObject();
         writer.WriteString("Type", type);
+        var visited = new HashSet<object>();
+
         foreach (var prop in value.GetType().GetProperties())
         {
-            writer.WritePropertyName(prop.Name);
-            JsonSerializer.Serialize(writer, prop.GetValue(value), options);
+            if (prop.Name == "Loan" || prop.Name == "Reservation")
+                continue;
+
+            var propValue = prop.GetValue(value);
+            if (propValue != null && !visited.Contains(propValue))
+            {
+                visited.Add(propValue);
+                writer.WritePropertyName(prop.Name);
+                JsonSerializer.Serialize(writer, propValue, options);
+            }
         }
+
         writer.WriteEndObject();
     }
 }

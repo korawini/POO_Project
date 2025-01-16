@@ -9,14 +9,13 @@ using System.Text.Json;
 
 public class wrapper
 {
-    public library Library { get; private set; } = new library(); // Bibliotecă
-    public List<student> Students { get; private set; } = new List<student>(); // Listă studenți
-    public List<admin> Admins { get; private set; } = new List<admin>(); // Listă administratori
-
-    // Fișierele pentru salvarea și citirea datelor
+    public library Library { get; private set; } = new library(); 
+    public List<student> Students { get; private set; } = new List<student>(); 
+    public List<admin> Admins { get; private set; } = new List<admin>(); 
+    
     private readonly string resourcesFile = "resources.json";
-    private readonly string usersFile = "students.json"; // Fișier pentru studenți
-    private readonly string adminsFile = "admins.json"; // Fișier pentru admini
+    private readonly string usersFile = "students.json"; 
+    private readonly string adminsFile = "admins.json"; 
 
     public void LoadData()
     {
@@ -27,7 +26,7 @@ public class wrapper
             {
                 Converters = { new resourceConverter() },
                 PropertyNameCaseInsensitive = true
-            }) ?? new List<resource>(); // Asigură că este o listă goală dacă nu există date
+            }) ?? new List<resource>(); 
         }
 
         if (File.Exists(usersFile))
@@ -51,27 +50,23 @@ public class wrapper
 
         Console.WriteLine("Data loaded successfully.");
     }
-
-    // Salvează datele în fișierele corespunzătoare
+    
     public void SaveData()
     {
-        // Salvăm resursele
         var resourcesJson = JsonSerializer.Serialize(Library.resources, new JsonSerializerOptions
         {
             Converters = { new resourceConverter() },
             WriteIndented = true
         });
         File.WriteAllText(resourcesFile, resourcesJson);
-
-        // Salvăm studenții în students.json
+        
         var usersJson = JsonSerializer.Serialize(Students, new JsonSerializerOptions
         {
             Converters = { new userConverter() },
             WriteIndented = true
         });
         File.WriteAllText(usersFile, usersJson);
-
-        // Salvăm administratorii în admins.json
+        
         var adminsJson = JsonSerializer.Serialize(Admins, new JsonSerializerOptions
         {
             WriteIndented = true
@@ -145,11 +140,11 @@ public class wrapper
             switch (choice)
             {
                 case "1":
-                    bool resourceCreated = false;  // Flag to check if a resource has been created
+                    bool resourceCreated = false; 
 
                     while (true)
                     {
-                        if (resourceCreated) // If a resource has already been created, exit the loop
+                        if (resourceCreated) 
                         {
                             Console.WriteLine("You have already created a resource. Exiting the program...");
                             break;
@@ -314,12 +309,14 @@ public class wrapper
 
                 case "2":
                     Console.WriteLine("Enter resource id: ");
-                    int resourceid = (int)(Console.ReadLine());
-                    Library.BorrowResource(studentUser.UserId,resourceid);
+                    int idr6 = int.Parse(Console.ReadLine());
+                    Library.BorrowResource(studentUser.UserId,idr6);
                     break;
 
                 case "4":
-                    Library.ReturnResource();
+                    Console.WriteLine("Enter loan id: ");
+                    int idr7 = int.Parse(Console.ReadLine());
+                    Library.ReturnResource(idr7);
                     break;
 
                 case "5":

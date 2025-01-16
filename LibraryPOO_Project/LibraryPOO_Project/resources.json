@@ -1,0 +1,42 @@
+[
+  {
+    "ResourceType": "Book",
+    "Id": 101,
+    "Title": "Introduction to Algorithms",
+    "Author": "Thomas H. Cormen",
+    "Genre": "Computer Science",
+    "PublishingDate": "2009-07-01",
+    "AvailableStock": 10
+  },
+  {
+    "ResourceType": "Ebook",
+    "Id": 102,
+    "Title": "Advanced Programming in C",
+    "Author": "Peter J. Denton",
+    "Genre": "Programming",
+    "PublishingDate": "2015-03-15",
+    "AvailableStock": 5,
+    "DownloadLink": "https://example.com/download/c-programming"
+  },
+  {
+    "ResourceType": "Magazine",
+    "Id": 103,
+    "Title": "Tech Weekly",
+    "Author": "Tech Publishers",
+    "Genre": "Technology",
+    "PublishingDate": "2024-01-01",
+    "AvailableStock": 50,
+    "Edition": "Vol. 1, Issue 5",
+    "Number": 5
+  },
+  {
+    "ResourceType": "Manual",
+    "Id": 104,
+    "Title": "Mathematics for Engineers",
+    "Author": "Dr. John D. Watson",
+    "Genre": "Engineering",
+    "PublishingDate": "2012-09-10",
+    "AvailableStock": 20,
+    "Course": "Engineering Mathematics 101"
+  }
+]
