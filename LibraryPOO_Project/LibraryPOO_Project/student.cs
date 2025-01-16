@@ -55,7 +55,7 @@ public class student:user
     {
         foreach (var loan in Loans)
         {
-            if (!loan.IsAvailable && DateTime.Now > loan.DueDate)
+            if (!loan.IsActive && DateTime.Now > loan.DueDate)
             {
                 Penalize();
                 break;
@@ -63,10 +63,28 @@ public class student:user
         }
     }
     
-    public student(int userId, string name, string email, List<loan> loans, int maxLoans, int loanDuration):base(userId,name,email)
+    public void ViewLoanHistory()
+    {
+        if (Loans.Count == 0)
+        {
+            Console.WriteLine("No loan history available.");
+            return;
+        }
+
+        Console.WriteLine($"Loan history for {Name}:");
+        foreach (var loan in Loans)
+        {
+            var status = loan.IsActive ? "Active" : "Returned";
+            Console.WriteLine($"Resource ID: {loan.ResourceId}, Loan Date: {loan.LoanDate.ToShortDateString()}, " +
+                              $"Due Date: {loan.DueDate.ToShortDateString()}, Status: {status}");
+        }
+    }
+    
+    public student(int userId, string name, string email, List<loan> loans, List<string> courses,int maxLoans, int loanDuration):base(userId,name,email)
     {
         this.maxLoans = maxLoans;
         this.loans = loans;
+        this.courses = courses;
         this.loanDuration = loanDuration;
     }
 }

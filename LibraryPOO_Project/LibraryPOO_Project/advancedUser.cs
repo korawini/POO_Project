@@ -10,9 +10,8 @@ public class advancedUser : student
     public List<string> Courses { get => courses; }
     public int MaxResources { get => maxLoans; }
     
-    public advancedUser(int userId, string name, string email, List<loan> loans, List<string> courses, int maxResources, int loanDuration) : base(userId, name, email, loans, 5, 21)
+    public advancedUser(int userId, string name, string email, List<loan> loans, List<string> courses) : base(userId, name, email, loans, courses,5, 21)
     {
         this.courses = courses;
-        
     }
 }

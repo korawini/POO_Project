@@ -5,9 +5,9 @@ using System.Globalization;
 
 public class library
 {
-    public List<resource> resources { get; set; }
-    public List<student> students { get; set; }
-    public List<loan> loans { get; set; }
+    public List<resource> resources { get=>resources; set=>resources=value; }
+    public List<student> students { get=>students; set=>students=value; }
+    public List<loan> loans { get=>loans; set=>loans=value; }
 
     public library()
     {
@@ -35,14 +35,15 @@ public class library
 
     public void CheckAllPenalties()
     {
-        //foreach (var s in student)
+        foreach (var s in students)
         {
-        //    s.CheckPenalties();
+            s.CheckPenalties();
         }
     }
     
     public void BorrowResource(int userId, int resourceId)
     {
+        //trb schiimbat user in student
         var user = students.FirstOrDefault(u => u.UserId == userId);
         resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); //resource
 
@@ -52,7 +53,7 @@ public class library
         if (resource == null)
             throw new ArgumentException("Resource not found.");
 
-        if (resource.AvailableStock <= 0)
+        if (resource.AvailableStock <= 0)//trb coaie sa vedem cum facem cu manualele sa nu poti in mortii ma sii sa poti sa o iei
         {
             Console.WriteLine($"Resource '{resource.Title}' is not available. Adding user {userId} to the reservation list.");
             resource.AddReservation(userId);
@@ -67,7 +68,7 @@ public class library
 
         var loan = new loan (loans.Count + 1, loanDate, resource.ResourceId, userId, dueDate);
         loans.Add(loan);
-
+        
         resource.AvailableStock--;
         user.Loans.Add(loan);
     }
@@ -75,7 +76,7 @@ public class library
     {
         var loan = loans.FirstOrDefault(l => l.LoanId == loanId);
 
-        if (loan == null || loan.IsAvailable)
+        if (loan == null || !loan.IsActive)
             throw new ArgumentException("Invalid loan ID or resource already returned.");
 
         var resource = resources.FirstOrDefault(r => r.ResourceId == loan.ResourceId);
@@ -84,9 +85,9 @@ public class library
         if (resource == null || user == null)
             throw new InvalidOperationException("Invalid resource or user.");
 
-        loan.IsAvailable = true;
+        loan.IsActive = false;
         resource.AvailableStock++;
-        user.Loans.Remove(loan);
+       // user.Loans.Remove(loan);
 
         if (DateTime.Now > loan.DueDate)
         {
@@ -94,14 +95,11 @@ public class library
             user.Penalize();
         }
         else
-        {
             Console.WriteLine($"Resource '{resource.Title}' returned successfully by {user.Name}.");
-        }
+        
         var nextUserId = resource.GetNextReservation();
         if (nextUserId.HasValue)
-        {
             Console.WriteLine($"Resource '{resource.Title}' is now reserved for user {nextUserId.Value}.");
-        }
     }
     /*
     public void SaveData(string resourcesFile, string usersFile)

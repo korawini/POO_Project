@@ -89,9 +89,9 @@ public class admin:user
         }
     }*/
     
-    public void AddCourseToStudent(int studentId, string courseName, List<user> users)
+    public void AddCourseToStudent(int studentId, string courseName, List<student> students)
     {
-        var student = users.OfType<student>().FirstOrDefault(u => u.UserId == studentId);
+        var student = students.FirstOrDefault(u => u.UserId == studentId);
         if (student != null)
         {
             student.Courses.Add(courseName);
@@ -107,14 +107,14 @@ public class admin:user
         {
             if (resource.reservations.Count > 0 && resource.AvailableStock > 0)
             {
-                var nextUserId = resource.GetNextReservation();
-                if (nextUserId.HasValue)
+                var nextStudentId = resource.GetNextReservation();//ssa vada cnv daca returneaza id-ul si daca nu fix it
+                if (nextStudentId.HasValue)
                 {
-                    var user = lb.students.FirstOrDefault(u => u.UserId == nextUserId.Value);
-                    if (user != null)
+                    var student = lb.students.FirstOrDefault(u => u.UserId == nextStudentId.Value);
+                    if (student != null)
                     {
-                        lb.BorrowResource(nextUserId.Value, resource.ResourceId);
-                        Console.WriteLine($"Resource '{resource.Title}' has been lent to user '{user.Name}' from the reservation list.");
+                        lb.BorrowResource(nextStudentId.Value, resource.ResourceId);
+                        Console.WriteLine($"Resource '{resource.Title}' has been lent to user '{student.Name}' from the reservation list.");
                     }
                 }
             }
