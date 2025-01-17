@@ -48,7 +48,7 @@ public void AddResource(resource resourcex)
         if (studentId != null && resourceId != null)
         {
             var user = students.FirstOrDefault(u => u.StudentId == studentId);
-            resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); //resource
+            resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); 
 
 
             if (user == null)
@@ -58,7 +58,7 @@ public void AddResource(resource resourcex)
                 throw new ArgumentException("Resource not found.");
 
             if (resource.AvailableStock <=
-                0) //trb coaie sa vedem cum facem cu manualele sa nu poti in mortii ma sii sa poti sa o iei
+                0) 
             {
                 Console.WriteLine(
                     $"Resource '{resource.Title}' is not available. Adding user {studentId} to the reservation list.");
@@ -111,26 +111,26 @@ public void AddResource(resource resourcex)
     }
     public void SearchResources(library lb)
     {
-        Console.WriteLine("Căutare resurse:");
-        Console.WriteLine("1. Afișează toate resursele");
-        Console.WriteLine("2. Căutare după tipul resursei");
-        Console.Write("Alegeți opțiunea (1 sau 2): ");
+        Console.WriteLine("Search Resources:");
+        Console.WriteLine("1. Show Resources");
+        Console.WriteLine("2. Filter Resources");
+        Console.Write("Choose one of the following options(1 or 2): ");
         var choice = Console.ReadLine();
 
         List<resource> filteredResources = lb.Resources;
         if (choice == "2")
         {
-            Console.Write("Introduceți tipul resursei (de exemplu: manual, carte): ");
+            Console.Write("What type of resource do you want to search?(manual,carte): ");
             string resourceType = Console.ReadLine();
             filteredResources = lb.Resources.Where(r => r.Type.Equals(resourceType, StringComparison.OrdinalIgnoreCase)).ToList();
         }
         if (filteredResources.Any())
         {
-            Console.WriteLine("\nResurse găsite:");
+            Console.WriteLine("\nResources found: ");
             foreach (var resource in filteredResources)
                 Console.WriteLine($"ID: {resource.ResourceId}, Titlu: {resource.Title}, Tip: {resource.Type}, Stoc disponibil: {resource.AvailableStock}, Autor: {resource.Author}, An Publicare: {resource.PublishingDate}");
         }
         else
-            Console.WriteLine("Nu s-au găsit resurse care să corespundă criteriilor de căutare.");
+            Console.WriteLine("No resources found.");
     }
 }

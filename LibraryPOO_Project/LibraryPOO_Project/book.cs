@@ -1,6 +1,5 @@
 namespace LibraryPOO_Project;
-//base for manual, book, ebook, magazine
-//can be borrowed by anyone
+
 public class book : resource
 {
     private string title, author, genre;

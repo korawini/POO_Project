@@ -86,14 +86,16 @@ public class admin:user
             Console.WriteLine($"User '{newStudent.Name}' is already registered.");
     }
     
-    public void DeleteInactiveAccounts()
+    public void DeleteInactiveAccounts(int studentId)
     {
-        var inactiveStudents = lb.students.Where(u => u.Loans.Count == 0).ToList();// ba nu e ok ca ii sterge si pe aia noi de nu apuca sa na si nu i sterge pe aia vechi
-        foreach (var student in inactiveStudents)
+        var student = lb.students.FirstOrDefault(r => r.StudentId == studentId);
+        if (student != null)
         {
             lb.students.Remove(student);
-            Console.WriteLine($"Inactive user '{student.Name}' has been removed by admin {Name}.");
+            Console.WriteLine($"Student '{studentId}' has been deleted by admin {Name}.");
         }
+        else
+            Console.WriteLine($"Student with ID {studentId} not found.");
     }
     
     public void AddCourseToStudent(int studentId, string courseName, List<student> students)
@@ -114,7 +116,7 @@ public class admin:user
         {
             if (resource.reservations.Count > 0 && resource.AvailableStock > 0)
             {
-                var nextStudentId = resource.GetNextReservation();//ssa vada cnv daca returneaza id-ul si daca nu fix it
+                var nextStudentId = resource.GetNextReservation();
                 if (nextStudentId.HasValue)
                 {
                     var student = lb.students.FirstOrDefault(u => u.UserId == nextStudentId.Value);

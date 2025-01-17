@@ -26,7 +26,7 @@ namespace LibraryPOO_Project
         {
             writer.WriteStartObject();
 
-            // Serialize common user properties
+            
             writer.WriteNumber("UserId", value.UserId);
             writer.WriteString("Name", value.Name);
             writer.WriteString("Email", value.Email);

@@ -1,5 +1,5 @@
 namespace LibraryPOO_Project;
-//can only be borrowed if the student is assigned to the course
+
 public class manual:resource
 {
     private string id, title, author, type, genre, course;

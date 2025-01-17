@@ -13,16 +13,16 @@ public class wrapper
 
     public void LoadData(library lb)
     {
-        // Load resources from file
+        
         if (File.Exists(resourcesFile))
         {
-            var lines = File.ReadAllLines(resourcesFile); // Read all lines from the resources file
+            var lines = File.ReadAllLines(resourcesFile); 
             foreach (var line in lines)
             {
                 var x = line.Split(';');
                 resource resource = null;
 
-                // Switch case to create resource based on its type
+                
                 switch (x[0])
                 {
                     case "book":
@@ -54,7 +54,7 @@ public class wrapper
             Console.WriteLine("Error loading resources");
         }
 
-        // Load students
+        
         if (File.Exists(studentsFile))
     {
         foreach (var line in File.ReadAllLines(studentsFile))
@@ -65,10 +65,10 @@ public class wrapper
             var name = lines[2];
             var email = lines[3];
 
-            // Debugging: log loaded student data
+            
             Console.WriteLine($"Loaded Student: {userId}, {name}, {email}");
 
-            // Parse the loans data
+           
             var loansList = new List<loan>();
             string loansString = lines[4].Trim('[', ']');
             if (!string.IsNullOrWhiteSpace(loansString))
@@ -80,22 +80,22 @@ public class wrapper
                     if (loanParts.Length >= 5)
                     {
                         loansList.Add(new loan(
-                            int.Parse(loanParts[0].Trim()), // LoanId
-                            DateTime.Parse(loanParts[1].Trim()), // LoanDate
-                            int.Parse(loanParts[2].Trim()), // ResourceId
-                            int.Parse(loanParts[3].Trim()), // UserId (this is the student's UserId)
-                            DateTime.Parse(loanParts[4].Trim()) // DueDate
+                            int.Parse(loanParts[0].Trim()), 
+                            DateTime.Parse(loanParts[1].Trim()), 
+                            int.Parse(loanParts[2].Trim()), 
+                            int.Parse(loanParts[3].Trim()),
+                            DateTime.Parse(loanParts[4].Trim()) 
                         ));
                     }
                 }
             }
 
-            // Parse courses data
+            
             var courses = lines[5].Trim('[', ']').Split(',').Select(c => c.Trim()).ToList();
             var maxLoans = int.Parse(lines[6]);
             var loanDuration = int.Parse(lines[7]);
 
-            // Create the student object and add to library
+            
             var studentObj = new student(type, userId, name, email, loansList, courses, maxLoans, loanDuration);
             lb.AddStudent(studentObj);
         }
@@ -105,7 +105,7 @@ public class wrapper
         Console.WriteLine("Error loading students");
     }
 
-    // Load admins
+   
     if (File.Exists(adminsFile))
     {
         foreach (var line in File.ReadAllLines(adminsFile))
@@ -367,7 +367,9 @@ public void RunMenu(library lb)
                     break;
 
                 case "7":
-                    adminUser.DeleteInactiveAccounts();
+                    Console.WriteLine("Enter student id: ");
+                    int idr9 = int.Parse(Console.ReadLine());
+                    adminUser.DeleteInactiveAccounts(idr9);
                     break;
 
                 case "8":
@@ -399,10 +401,9 @@ public void RunMenu(library lb)
             Console.WriteLine($"\nWelcome Student {studentUser.Name}!");
             Console.WriteLine("1. Search resources");
             Console.WriteLine("2. Borrow resource");
-            Console.WriteLine("3. Reserve resource");
-            Console.WriteLine("4. Return resource");
-            Console.WriteLine("5. View loan history");
-            Console.WriteLine("6. Log out");
+            Console.WriteLine("3. Return resource");
+            Console.WriteLine("4. View loan history");
+            Console.WriteLine("5. Log out");
             Console.Write("Select an option: ");
             var choice = Console.ReadLine();
 
@@ -417,18 +418,19 @@ public void RunMenu(library lb)
                     int idr6 = int.Parse(Console.ReadLine());
                     lb.BorrowResource(studentUser.UserId, idr6);
                     break;
+                
 
-                case "4":
+                case "3":
                     Console.WriteLine("Enter loan id: ");
                     int idr7 = int.Parse(Console.ReadLine());
                     lb.ReturnResource(idr7);
                     break;
 
-                case "5":
+                case "4":
                     studentUser.ViewLoanHistory();
                     break;
 
-                case "6":
+                case "5":
                     Console.WriteLine("Logging out");
                     return;
 
