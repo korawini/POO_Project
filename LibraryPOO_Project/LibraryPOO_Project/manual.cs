@@ -12,8 +12,8 @@ public class manual:resource
         set => course= value;
     }
     
-    public manual(int id, string title, string author, string type, string genre, DateTime publishingDate,
-        int availableStock, string course) : base(id, title, author, type, genre, publishingDate, availableStock)
+    public manual(int id, string title, string author, string genre, DateTime publishingDate,
+        int availableStock, string course) : base("manual", id, title, author, genre, publishingDate, availableStock)
     {
         this.course = course;
     }

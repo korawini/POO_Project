@@ -3,11 +3,12 @@ namespace LibraryPOO_Project;
 //can be borrowed by anyone
 public class book : resource
 {
-    private string id, title, author, type, genre;
+    private string title, author, genre;
+    private int id;
     private DateTime publishingDate;
     private int availableStock;
     
-    public string Id
+    public int Id
     {
         get => id;
         set => id = value;
@@ -23,12 +24,6 @@ public class book : resource
     {
         get => author; 
         set => author= value;
-    }
-
-    public string Type
-    {
-        get => type;
-        set => type = value;
     }
 
     public string Genre
@@ -49,8 +44,8 @@ public class book : resource
         set => availableStock = value;
     }
     
-    public book(int id, string title, string author, string type, string genre, DateTime publishingDate,
-        int availableStock): base(id, title, author, type, genre, publishingDate, availableStock)
+    public book(int id, string title, string author, string genre, DateTime publishingDate,
+        int availableStock): base("book", id, title, author,  genre, publishingDate, availableStock)
     {
         
     }

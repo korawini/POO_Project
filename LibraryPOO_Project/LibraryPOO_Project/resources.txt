@@ -1,0 +1,11 @@
+book;101;Introduction to Algorithms;Thomas H. Cormen;Computer Science;2009-07-01;0
+ebook;102;Advanced Programming in C;Peter J. Denton;Programming;2015-03-15;5;https://example.com/download/c-programming
+magazine;103;Tech Weekly;Tech Publishers;Technology;2024-01-01;50;Vol. 1, Issue 5;5
+manual;104;Mathematics for Engineers;Dr. John D. Watson;Engineering;2012-09-10;20;Engineering Mathematics 101
+book;105;Design Patterns: Elements of Reusable Object-Oriented Software;Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides;Software Engineering;1994-10-31;8
+ebook;106;Data Structures and Algorithms in C++;Adam Drozdek;Programming;2012-11-22;12;https://example.com/download/data-structures-cpp
+magazine;107;Science Today;Science Journalists;Science;2023-06-15;30;Vol. 3, Issue 8;8
+manual;108;Electrical Engineering Principles;Dr. Sarah L. Taylor;Engineering;2015-02-18;15;Electrical Engineering 101
+book;109;Artificial Intelligence: A Modern Approach;Stuart Russell, Peter Norvig;Artificial Intelligence;2020-01-01;10
+ebook;110;Machine Learning Yearning;Andrew Ng;Machine Learning;2018-03-15;7;https://example.com/download/machine-learning-yearning
+book;111;Craciunozaurul;Mario Vesa;Comedy;2004-03-03;69

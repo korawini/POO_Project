@@ -1,0 +1,11 @@
+student;1;Alice Johnson;alice@example.com;[1,2025-01-01,101,1,2025-01-15],[2,2025-01-05,102,1,2025-01-20];[Math,Science];3;14
+student;2;Bob Smith;bob@example.com;[3,2025-01-10,103,2,2025-01-25],[4,2025-01-12,104,2,2025-01-28];[Physics,English];5;10
+student;3;Carol White;carol@example.com;[5,2025-01-15,105,3,2025-01-30],[6,2025-01-18,106,3,2025-02-02];[Chemistry,History];6;12
+student;4;David Brown;david@example.com;[7,2025-01-20,107,4,2025-02-04],[8,2025-01-22,108,4,2025-02-06];[Math,Art];2;8
+student;5;Eva Green;eva@example.com;[9,2025-01-25,109,5,2025-02-09],[10,2025-01-28,110,5,2025-02-12];[Biology,English];4;15
+student;6;Frank Hall;frank@example.com;[11,2025-02-01,111,6,2025-02-15],[12,2025-02-05,112,6,2025-02-18];[History,Music];3;7
+student;7;Grace Lee;grace@example.com;[13,2025-02-10,113,7,2025-02-24],[14,2025-02-12,114,7,2025-02-26];[Art,Math];7;18
+student;8;Harry King;harry@example.com;[15,2025-02-15,115,8,2025-03-01],[16,2025-02-18,116,8,2025-03-03];[Science,Music];6;9
+student;9;Ivy Moore;ivy@example.com;[17,2025-02-20,117,9,2025-03-05],[18,2025-02-22,118,9,2025-03-07];[Chemistry,Physics];4;10
+student;10;Jack Taylor;jack@example.com;[19,2025-02-25,119,10,2025-03-10],[20,2025-02-28,120,10,2025-03-12];[Biology,English];5;11
+student;13;Tolcica;tolcica_bengosu@yahoo.com;[];[,Biology,Agriculture];3;14

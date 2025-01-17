@@ -2,7 +2,8 @@ namespace LibraryPOO_Project;
 
 public class ebook:resource
 {
-    private string id, title, author, type, genre, link;
+    private string title, author, genre, link;
+    private int id;
     private DateTime publishingDate;
     private int availableStock;
 
@@ -12,8 +13,8 @@ public class ebook:resource
         set => link = value;
     }
     
-    public ebook(int id, string title, string author, string type, string genre, DateTime publishingDate,
-        int availableStock, string link) : base(id, title, author, type, genre, publishingDate, availableStock)
+    public ebook(int id, string title, string author, string genre, DateTime publishingDate,
+        int availableStock, string link) : base("ebook", id, title, author, genre, publishingDate, availableStock)
     {
         this.link = link;
     }

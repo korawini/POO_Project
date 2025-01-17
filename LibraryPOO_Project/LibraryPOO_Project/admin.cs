@@ -5,10 +5,17 @@ public class admin:user
     private string name, email;
     private int userId;
     private library lb;
-
+    
+    public string Name {get => name;}
+    public string Email {get => email;}
+    public int UserId {get => userId;}
+    
     public admin(int userId, string name, string email, library lb) : base(userId, name, email)
     {
         this.lb = lb;
+        this.name = name;
+        this.email = email;
+        this.userId = userId;
     }
     public void AddResources(resource resourcex)
     {
@@ -79,7 +86,7 @@ public class admin:user
             Console.WriteLine($"User '{newStudent.Name}' is already registered.");
     }
     
-    /*public void DeleteInactiveAccounts()
+    public void DeleteInactiveAccounts()
     {
         var inactiveStudents = lb.students.Where(u => u.Loans.Count == 0).ToList();// ba nu e ok ca ii sterge si pe aia noi de nu apuca sa na si nu i sterge pe aia vechi
         foreach (var student in inactiveStudents)
@@ -87,7 +94,7 @@ public class admin:user
             lb.students.Remove(student);
             Console.WriteLine($"Inactive user '{student.Name}' has been removed by admin {Name}.");
         }
-    }*/
+    }
     
     public void AddCourseToStudent(int studentId, string courseName, List<student> students)
     {

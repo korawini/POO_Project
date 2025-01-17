@@ -2,7 +2,8 @@ namespace LibraryPOO_Project;
 
 public class magazine:resource
 {
-    private string id, title, author, type, genre, link, edition;
+    private string title, author, genre, edition;
+    private int id;
     private DateTime publishingDate;
     private int availableStock, number;
 
@@ -18,8 +19,13 @@ public class magazine:resource
         set => number = value;
     }
     
-    public magazine(int id, string title, string author, string type, string genre, DateTime publishingDate,
-        int availableStock, string edition, int number) : base(id, title, author, type, genre, publishingDate, availableStock)
+    public int Id
+    {
+        get => id;
+    }
+    
+    public magazine(int id, string title, string author, string genre, DateTime publishingDate,
+        int availableStock, string edition, int number) : base("magazine",id, title, author, genre, publishingDate, availableStock)
     {
         this.edition = edition;
         this.number = number;

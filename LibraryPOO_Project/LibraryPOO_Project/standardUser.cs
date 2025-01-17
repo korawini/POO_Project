@@ -19,7 +19,7 @@ public class standardUser: student
         set => maxLoans = value;
     }
     
-    public standardUser(int userId, string name, string email, List<loan> loans, List<string> courses) : base(userId, name, email, loans,courses,3,14)
+    public standardUser(int userId, string name, string email, List<loan> loans, List<string> courses) : base("StandardUser",userId, name, email, loans,courses,3,14)
     {
         this.courses = courses;
         this.courses = courses;

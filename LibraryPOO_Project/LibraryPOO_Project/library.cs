@@ -1,23 +1,23 @@
 namespace LibraryPOO_Project;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Globalization;
-
 public class library
 {
-    public List<resource> resources ;
+    public List<resource> resources;
     public List<student> students;
+    public List<admin> admins;
     public List<loan> loans;
-        
+
 
     public library()
     {
         resources = new List<resource>();
         students = new List<student>();
         loans = new List<loan>();
+        admins = new List<admin>();
     }
 
-    public void AddResource(resource resourcex)
+    public List<resource> Resources  { get => resources; }
+
+public void AddResource(resource resourcex)
     {
         if (!resources.Contains(resourcex))
             resources.Add(resourcex);
@@ -42,38 +42,45 @@ public class library
             s.CheckPenalties();
         }
     }
-    
-    public void BorrowResource(int userId, int resourceId)
+
+    public void BorrowResource(int studentId, int resourceId)
     {
-        //trb schiimbat user in student
-        var user = students.FirstOrDefault(u => u.UserId == userId);
-        resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); //resource
-
-        if (user == null)
-            throw new ArgumentException("User not found.");
-
-        if (resource == null)
-            throw new ArgumentException("Resource not found.");
-
-        if (resource.AvailableStock <= 0)//trb coaie sa vedem cum facem cu manualele sa nu poti in mortii ma sii sa poti sa o iei
+        if (studentId != null && resourceId != null)
         {
-            Console.WriteLine($"Resource '{resource.Title}' is not available. Adding user {userId} to the reservation list.");
-            resource.AddReservation(userId);
-            return;
+            var user = students.FirstOrDefault(u => u.StudentId == studentId);
+            resource resource = resources.FirstOrDefault(r => r.ResourceId == resourceId); //resource
+
+
+            if (user == null)
+                throw new ArgumentException("Student not found.");
+
+            if (resource == null)
+                throw new ArgumentException("Resource not found.");
+
+            if (resource.AvailableStock <=
+                0) //trb coaie sa vedem cum facem cu manualele sa nu poti in mortii ma sii sa poti sa o iei
+            {
+                Console.WriteLine(
+                    $"Resource '{resource.Title}' is not available. Adding user {studentId} to the reservation list.");
+                resource.AddReservation(studentId);
+                return;
+            }
+
+            if (user.Loans.Count >= user.MaxLoans)
+                throw new InvalidOperationException("User has reached the maximum number of loans.");
+
+            DateTime loanDate = DateTime.Now;
+            DateTime dueDate = loanDate.AddDays(user.LoanDuration);
+
+            var loan = new loan(loans.Count + 1, loanDate, resource.ResourceId, studentId, dueDate);
+            loans.Add(loan);
+
+            resource.AvailableStock--;
+            user.Loans.Add(loan);
+            resource.ShowResourceDetails(resource);
         }
-
-        if (user.Loans.Count >= user.MaxLoans)
-            throw new InvalidOperationException("User has reached the maximum number of loans.");
-
-        DateTime loanDate = DateTime.Now;
-        DateTime dueDate = loanDate.AddDays(user.LoanDuration);
-
-        var loan = new loan (loans.Count + 1, loanDate, resource.ResourceId, userId, dueDate);
-        loans.Add(loan);
-        
-        resource.AvailableStock--;
-        user.Loans.Add(loan);
-    }
+        else Console.WriteLine("User or resource doesnt exist.");
+}
     public void ReturnResource(int loanId)
     {
         var loan = loans.FirstOrDefault(l => l.LoanId == loanId);
@@ -89,7 +96,6 @@ public class library
 
         loan.IsActive = false;
         resource.AvailableStock++;
-       // user.Loans.Remove(loan);
 
         if (DateTime.Now > loan.DueDate)
         {
@@ -103,42 +109,28 @@ public class library
         if (nextUserId.HasValue)
             Console.WriteLine($"Resource '{resource.Title}' is now reserved for user {nextUserId.Value}.");
     }
-    /*
-    public void SaveData(string resourcesFile, string usersFile)
+    public void SearchResources(library lb)
     {
-        try
-        {
-            var resourcesJson = JsonSerializer.Serialize(resources, new JsonSerializerOptions { WriteIndented = true });
-            var usersJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
+        Console.WriteLine("Căutare resurse:");
+        Console.WriteLine("1. Afișează toate resursele");
+        Console.WriteLine("2. Căutare după tipul resursei");
+        Console.Write("Alegeți opțiunea (1 sau 2): ");
+        var choice = Console.ReadLine();
 
-            File.WriteAllText(resourcesFile, resourcesJson);
-            File.WriteAllText(usersFile, usersJson);
-        }
-        catch (Exception ex)
+        List<resource> filteredResources = lb.Resources;
+        if (choice == "2")
         {
-            Console.WriteLine($"Error saving data: {ex.Message}");
+            Console.Write("Introduceți tipul resursei (de exemplu: manual, carte): ");
+            string resourceType = Console.ReadLine();
+            filteredResources = lb.Resources.Where(r => r.Type.Equals(resourceType, StringComparison.OrdinalIgnoreCase)).ToList();
         }
+        if (filteredResources.Any())
+        {
+            Console.WriteLine("\nResurse găsite:");
+            foreach (var resource in filteredResources)
+                Console.WriteLine($"ID: {resource.ResourceId}, Titlu: {resource.Title}, Tip: {resource.Type}, Stoc disponibil: {resource.AvailableStock}, Autor: {resource.Author}, An Publicare: {resource.PublishingDate}");
+        }
+        else
+            Console.WriteLine("Nu s-au găsit resurse care să corespundă criteriilor de căutare.");
     }
-
-    public void LoadData(string resourcesFile, string usersFile)
-    {
-        try
-        {
-            if (File.Exists(resourcesFile))
-            {
-                var resourcesJson = File.ReadAllText(resourcesFile);
-                resources = JsonSerializer.Deserialize<List<book>>(resourcesJson) ?? new List<book>();
-            }
-
-            if (File.Exists(usersFile))
-            {
-                var usersJson = File.ReadAllText(usersFile);
-                users = JsonSerializer.Deserialize<List<user>>(usersJson) ?? new List<user>();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading data: {ex.Message}");
-        }
-    }*/
 }

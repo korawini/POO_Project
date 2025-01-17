@@ -69,7 +69,38 @@ public class resource
         return null;
     }
     
-    public resource(int id, string title, string author, string type, string genre, DateTime publishingDate,
+    public void ShowResourceDetails(resource resource)
+    {
+        Console.WriteLine("\nDetails of the borrowed resource:");
+        Console.WriteLine($"Resource ID: {resource.ResourceId}");
+        Console.WriteLine($"Title: {resource.Title}");
+        Console.WriteLine($"Author: {resource.Author}");
+        Console.WriteLine($"Genre: {resource.Genre}");
+        Console.WriteLine($"Publishing Date: {resource.PublishingDate:yyyy-MM-dd}");
+        Console.WriteLine($"Available Stock: {resource.AvailableStock}");
+
+        switch (resource)
+        {
+            case book:
+                Console.WriteLine($"Book Type: Book");
+                break;
+            case ebook ebook:
+                Console.WriteLine($"Ebook Download Link: {ebook.Link}");
+                break;
+            case magazine magazine:
+                Console.WriteLine($"Edition: {magazine.Edition}, Number: {magazine.Number}");
+                break;
+            case manual manual:
+                Console.WriteLine($"Course: {manual.Course}");
+                break;
+            default:
+                Console.WriteLine("Unknown resource type.");
+                break;
+        }
+    }
+
+    
+    public resource(string type, int id, string title, string author, string genre, DateTime publishingDate,
         int availableStock)
     {
         this.resourceId = id;

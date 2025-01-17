@@ -1,24 +1,31 @@
+using System.Diagnostics;
+
 namespace LibraryPOO_Project;
 
 public class student:user
 {   
-    private string  name, email;
-    private int maxLoans, loanDuration,userId;
+    private string  name, email,type;
+    private int maxLoans, loanDuration,studentId;
     private List <loan> loans = new List<loan>();
     private List <string> courses = new List<string>();
     
     public List<string> Courses { get => courses; set => courses = value; }
 
-    public int UserId
+    public int StudentId
     {
-        get => userId;
-        set => userId = value;
+        get => studentId;
+        set => studentId = value;
     }
 
     public string Name
     {
         get => name;
         set => name = value;
+    }
+    public string Type
+    {
+        get => type;
+        set => type = value;
     }
 
     public string Email
@@ -80,11 +87,15 @@ public class student:user
         }
     }
     
-    public student(int userId, string name, string email, List<loan> loans, List<string> courses,int maxLoans, int loanDuration):base(userId,name,email)
+    public student(string type, int studentId, string name, string email, List<loan> loans, List<string> courses,int maxLoans, int loanDuration):base(studentId,name,email)
     {
         this.maxLoans = maxLoans;
         this.loans = loans;
         this.courses = courses;
         this.loanDuration = loanDuration;
+        this.type = type;
+        this.studentId = studentId;
+        this.name = name;
+        this.email = email;
     }
 }

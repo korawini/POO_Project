@@ -1,82 +1,186 @@
-using System.Runtime.InteropServices.JavaScript;
-
 namespace LibraryPOO_Project;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
 
 public class wrapper
 {
-    public library Library { get; private set; } = new library(); 
-    public List<student> Students { get; private set; } = new List<student>(); 
-    public List<admin> Admins { get; private set; } = new List<admin>(); 
-    
-    private readonly string resourcesFile = "resources.json";
-    private readonly string usersFile = "students.json"; 
-    private readonly string adminsFile = "admins.json"; 
+    private readonly string resourcesFile =
+        "C:\\Users\\alexa\\RiderProjects\\POO_Project\\LibraryPOO_Project\\LibraryPOO_Project\\resources.txt";
 
-    public void LoadData()
+    private readonly string studentsFile =
+        "C:\\Users\\alexa\\RiderProjects\\POO_Project\\LibraryPOO_Project\\LibraryPOO_Project\\StudentsFile.txt";
+
+    private readonly string adminsFile =
+        "C:\\Users\\alexa\\RiderProjects\\POO_Project\\LibraryPOO_Project\\LibraryPOO_Project\\admins.txt";
+
+    public void LoadData(library lb)
     {
+        // Load resources from file
         if (File.Exists(resourcesFile))
         {
-            var resourcesJson = File.ReadAllText(resourcesFile);
-            Library.resources = JsonSerializer.Deserialize<List<resource>>(resourcesJson, new JsonSerializerOptions
+            var lines = File.ReadAllLines(resourcesFile); // Read all lines from the resources file
+            foreach (var line in lines)
             {
-                Converters = { new resourceConverter() },
-                PropertyNameCaseInsensitive = true
-            }) ?? new List<resource>(); 
-        }
+                var x = line.Split(';');
+                resource resource = null;
 
-        if (File.Exists(usersFile))
+                // Switch case to create resource based on its type
+                switch (x[0])
+                {
+                    case "book":
+                        resource = new book(int.Parse(x[1]), x[2], x[3], x[4], DateTime.Parse(x[5]), int.Parse(x[6]));
+                        break;
+                    case "magazine":
+                        resource = new magazine(int.Parse(x[1]), x[2], x[3], x[4], DateTime.Parse(x[5]),
+                            int.Parse(x[6]), x[7], int.Parse(x[8]));
+                        break;
+                    case "manual":
+                        resource = new manual(int.Parse(x[1]), x[2], x[3], x[4], DateTime.Parse(x[5]), int.Parse(x[6]),
+                            x[7]);
+                        break;
+                    case "ebook":
+                        resource = new ebook(int.Parse(x[1]), x[2], x[3], x[4], DateTime.Parse(x[5]), int.Parse(x[6]),
+                            x[7]);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid resource type");
+                        break;
+                }
+
+                if (resource != null)
+                    lb.AddResource(resource);
+            }
+        }
+        else
         {
-            var usersJson = File.ReadAllText(usersFile);
-            Students = JsonSerializer.Deserialize<List<student>>(usersJson, new JsonSerializerOptions
-            {
-                Converters = { new userConverter() },
-                PropertyNameCaseInsensitive = true
-            }) ?? new List<student>();
+            Console.WriteLine("Error loading resources");
         }
 
-        if (File.Exists(adminsFile))
-        {
-            var adminsJson = File.ReadAllText(adminsFile);
-            Admins = JsonSerializer.Deserialize<List<admin>>(adminsJson, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            }) ?? new List<admin>();
-        }
-
-        Console.WriteLine("Data loaded successfully.");
-    }
-    
-    public void SaveData()
+        // Load students
+        if (File.Exists(studentsFile))
     {
-        var resourcesJson = JsonSerializer.Serialize(Library.resources, new JsonSerializerOptions
+        foreach (var line in File.ReadAllLines(studentsFile))
         {
-            Converters = { new resourceConverter() },
-            WriteIndented = true
-        });
-        File.WriteAllText(resourcesFile, resourcesJson);
-        
-        var usersJson = JsonSerializer.Serialize(Students, new JsonSerializerOptions
-        {
-            Converters = { new userConverter() },
-            WriteIndented = true
-        });
-        File.WriteAllText(usersFile, usersJson);
-        
-        var adminsJson = JsonSerializer.Serialize(Admins, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
-        File.WriteAllText(adminsFile, adminsJson);
+            var lines = line.Split(';');
+            var type = lines[0];
+            var userId = int.Parse(lines[1]);
+            var name = lines[2];
+            var email = lines[3];
 
-        Console.WriteLine("Data saved successfully.");
+            // Debugging: log loaded student data
+            Console.WriteLine($"Loaded Student: {userId}, {name}, {email}");
+
+            // Parse the loans data
+            var loansList = new List<loan>();
+            string loansString = lines[4].Trim('[', ']');
+            if (!string.IsNullOrWhiteSpace(loansString))
+            {
+                var loanEntries = loansString.Split(new[] { "],[" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var loanStr in loanEntries)
+                {
+                    var loanParts = loanStr.Split(',');
+                    if (loanParts.Length >= 5)
+                    {
+                        loansList.Add(new loan(
+                            int.Parse(loanParts[0].Trim()), // LoanId
+                            DateTime.Parse(loanParts[1].Trim()), // LoanDate
+                            int.Parse(loanParts[2].Trim()), // ResourceId
+                            int.Parse(loanParts[3].Trim()), // UserId (this is the student's UserId)
+                            DateTime.Parse(loanParts[4].Trim()) // DueDate
+                        ));
+                    }
+                }
+            }
+
+            // Parse courses data
+            var courses = lines[5].Trim('[', ']').Split(',').Select(c => c.Trim()).ToList();
+            var maxLoans = int.Parse(lines[6]);
+            var loanDuration = int.Parse(lines[7]);
+
+            // Create the student object and add to library
+            var studentObj = new student(type, userId, name, email, loansList, courses, maxLoans, loanDuration);
+            lb.AddStudent(studentObj);
+        }
     }
-    
-    public void RunMenu()
+    else
+    {
+        Console.WriteLine("Error loading students");
+    }
+
+    // Load admins
+    if (File.Exists(adminsFile))
+    {
+        foreach (var line in File.ReadAllLines(adminsFile))
+        {
+            var lines = line.Split(';');
+            var userId = int.Parse(lines[0]);
+            var name = lines[1];
+            var email = lines[2];
+            admin admin = new admin(userId, name, email, lb);
+            if (admin != null)
+                lb.admins.Add(admin);
+            else
+                Console.WriteLine("Error loading admin");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Error loading admins");
+    }
+    }
+
+
+    public void SaveData(library lb)
+    {
+        using (StreamWriter writer = new StreamWriter(resourcesFile))
+        {
+            foreach (var resource in lb.Resources)
+            {
+                var resourceData =
+                    $"{resource.Type};{resource.ResourceId};{resource.Title};{resource.Author};{resource.Genre};{resource.PublishingDate:yyyy-MM-dd};{resource.AvailableStock}";
+                switch (resource)
+                {
+                    case ebook ebook:
+                        resourceData += $";{ebook.Link}";
+                        break;
+
+                    case magazine magazine:
+                        resourceData += $";{magazine.Edition};{magazine.Number}";
+                        break;
+
+                    case manual manual:
+                        resourceData += $";{manual.Course}";
+                        break;
+                    default:
+                        break;
+                }
+                writer.WriteLine(resourceData);
+            }
+        }
+
+        using (StreamWriter writer = new StreamWriter(studentsFile))
+        {
+            foreach (var student in lb.students)
+            {
+                var loanString = string.Join("],[",
+                    student.Loans.Select(l => $"{l.LoanId},{l.LoanDate:yyyy-MM-dd},{l.ResourceId},{l.UserId},{l.DueDate:yyyy-MM-dd}"));
+                loanString = $"[{loanString}]"; 
+                var coursesString = $"[{string.Join(",", student.Courses)}]"; 
+                var studentData = $"student;{student.UserId};{student.Name};{student.Email};{loanString};{coursesString};{student.MaxLoans};{student.LoanDuration}";
+                writer.WriteLine(studentData);
+            }
+        }
+        using (StreamWriter writer = new StreamWriter(adminsFile))
+        {
+            foreach (var admin in lb.admins)
+            {
+                var adminData = $"{admin.UserId};{admin.Name};{admin.Email}";
+                writer.WriteLine(adminData);
+            }
+        }
+        Console.WriteLine("Data has been successfully saved!");
+    }
+
+
+public void RunMenu(library lb)
     {
         while (true)
         {
@@ -92,24 +196,25 @@ public class wrapper
                     Console.Write("Enter your ID: ");
                     if (int.TryParse(Console.ReadLine(), out int userId))
                     {
-                        var user = Students.FirstOrDefault(u => u.UserId == userId);
-                        if (user != null)
-                            RunStudentMenu(user);
+                        var student = lb.students.FirstOrDefault(u => u.UserId == userId);
+                        if (student != null)
+                            RunStudentMenu(student,lb);
                         else
                         {
-                            var adminUser = Admins.FirstOrDefault(a => a.UserId == userId);
+                            var adminUser = lb.admins.FirstOrDefault(a => a.UserId == userId);
                             if (adminUser != null)
-                                RunAdminMenu(adminUser);
+                                RunAdminMenu(adminUser,lb);
                             else
                                 Console.WriteLine("User not found!");
                         }
                     }
                     else
                         Console.WriteLine("Invalid ID format!");
+
                     break;
 
                 case "2":
-                    SaveData();
+                    SaveData(lb);
                     Console.WriteLine("Goodbye!");
                     return;
 
@@ -119,8 +224,8 @@ public class wrapper
             }
         }
     }
-    
-    private void RunAdminMenu(admin adminUser)
+
+    private void RunAdminMenu(admin adminUser, library lb)
     {
         while (true)
         {
@@ -140,11 +245,11 @@ public class wrapper
             switch (choice)
             {
                 case "1":
-                    bool resourceCreated = false; 
+                    bool resourceCreated = false;
 
                     while (true)
                     {
-                        if (resourceCreated) 
+                        if (resourceCreated)
                         {
                             Console.WriteLine("You have already created a resource. Exiting the program...");
                             break;
@@ -177,7 +282,7 @@ public class wrapper
                         switch (choice2)
                         {
                             case "1":
-                                book r = new book(id, title, author, "book", genre, new DateTime(y, m, dd),
+                                book r = new book(id, title, author, genre, new DateTime(y, m, dd),
                                     availableStock);
                                 adminUser.AddResources(r);
                                 resourceCreated = true;
@@ -185,7 +290,7 @@ public class wrapper
                             case "2":
                                 Console.Write("Enter Download Link: ");
                                 string link = Console.ReadLine();
-                                ebook r2 = new ebook(id, title, author, "ebook", genre, new DateTime(y, m, dd),
+                                ebook r2 = new ebook(id, title, author, genre, new DateTime(y, m, dd),
                                     availableStock, link);
                                 adminUser.AddResources(r2);
                                 resourceCreated = true;
@@ -195,7 +300,7 @@ public class wrapper
                                 string edition = Console.ReadLine();
                                 Console.Write("Enter Number: ");
                                 int nb = int.Parse(Console.ReadLine());
-                                magazine r3 = new magazine(id, title, author, "book", genre, new DateTime(y, m, dd),
+                                magazine r3 = new magazine(id, title, author, genre, new DateTime(y, m, dd),
                                     availableStock, edition, nb);
                                 adminUser.AddResources(r3);
                                 resourceCreated = true;
@@ -203,7 +308,7 @@ public class wrapper
                             case "4":
                                 Console.Write("Enter Course Name: ");
                                 string course = Console.ReadLine();
-                                manual r4 = new manual(id, title, author, "book", genre, new DateTime(y, m, dd),
+                                manual r4 = new manual(id, title, author, genre, new DateTime(y, m, dd),
                                     availableStock, course);
                                 adminUser.AddResources(r4);
                                 resourceCreated = true;
@@ -229,9 +334,9 @@ public class wrapper
                     int idr2 = int.Parse(Console.ReadLine());
                     Console.WriteLine("Enter new stock: ");
                     int ns = int.Parse(Console.ReadLine());
-                    adminUser.UpdateResourceStock(idr2,ns);
+                    adminUser.UpdateResourceStock(idr2, ns);
                     break;
-                
+
                 case "4":
                     Console.WriteLine("Enter resource id: ");
                     int idr3 = int.Parse(Console.ReadLine());
@@ -243,36 +348,36 @@ public class wrapper
                     string genre2 = Console.ReadLine();
                     Console.Write("Enter Available Stock: ");
                     int availableStock2 = int.Parse(Console.ReadLine());
-                    adminUser.UpdateResource(idr3,title2,author2,genre2,availableStock2);
+                    adminUser.UpdateResource(idr3, title2, author2, genre2, availableStock2);
                     break;
-                
+
                 case "5":
                     adminUser.CheckResourceStock();
                     break;
-                
+
                 case "6":
                     Console.WriteLine("Enter resource id: ");
                     int idr4 = int.Parse(Console.ReadLine());
-                    Console.Write("Enter Name: ");  
+                    Console.Write("Enter Name: ");
                     string name = Console.ReadLine();
-                    Console.Write("Enter Emal: ");
+                    Console.Write("Enter Email: ");
                     string email = Console.ReadLine();
                     var s = new standardUser(idr4, name, email, new List<loan>(), new List<string>());
                     adminUser.RegisterStudent(s);
                     break;
-                
+
                 case "7":
-                    //adminUser.DeleteInactiveAccounts();
+                    adminUser.DeleteInactiveAccounts();
                     break;
 
                 case "8":
                     Console.WriteLine("Enter resource id: ");
                     int idr5 = int.Parse(Console.ReadLine());
-                    Console.Write("Enter Course Name: ");  
+                    Console.Write("Enter Course Name: ");
                     string cname = Console.ReadLine();
-                    adminUser.AddCourseToStudent(idr5,cname,Students);
+                    adminUser.AddCourseToStudent(idr5, cname, lb.students);
                     break;
-                
+
                 case "9":
                     adminUser.ProcessReservations();
                     break;
@@ -286,8 +391,8 @@ public class wrapper
             }
         }
     }
-    
-    private void RunStudentMenu(student studentUser)
+
+    private void RunStudentMenu(student studentUser, library lb)
     {
         while (true)
         {
@@ -304,19 +409,19 @@ public class wrapper
             switch (choice)
             {
                 case "1":
-                   // Library.SearchResources();
+                    lb.SearchResources(lb);
                     break;
 
                 case "2":
                     Console.WriteLine("Enter resource id: ");
                     int idr6 = int.Parse(Console.ReadLine());
-                    Library.BorrowResource(studentUser.UserId,idr6);
+                    lb.BorrowResource(studentUser.UserId, idr6);
                     break;
 
                 case "4":
                     Console.WriteLine("Enter loan id: ");
                     int idr7 = int.Parse(Console.ReadLine());
-                    Library.ReturnResource(idr7);
+                    lb.ReturnResource(idr7);
                     break;
 
                 case "5":
